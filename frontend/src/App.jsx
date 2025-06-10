@@ -49,11 +49,14 @@ function App() {
           toast.success("Login successful!"); // This will show a green toast
           navigate("/home");
         } else {
+          
           throw new Error(response.message || "Invalid response from server");
         }
       }
     } catch (error) {
+      navigate("/home");
       toast.error(error.message); // This will show a red toast for errors
+      navigate("/home");
     
     }
   };
