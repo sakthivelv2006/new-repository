@@ -1,20 +1,20 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { BsCalendar, BsTelephone } from "react-icons/bs";
-import { FaUser, FaBriefcase, FaIdBadge } from "react-icons/fa";
+import { ToastContainer } from "react-toastify";
+import { BsCalendar, BsTelephone, BsPeople, BsGeoAlt } from "react-icons/bs";
+import { FaMapMarkerAlt } from "react-icons/fa";
 import userBooking from "../store/store.userBooking.js";
 
 function Booking({ userId, onClose }) {
   const [formData, setFormData] = useState({
-    name: "",
-    dateofbirth: "",
-    experience: "",
+    from: "",
+    date: "",
+    destination: "",
     phone: "",
-    roll: "",
+    members: "",
   });
-
   const [phoneError, setPhoneError] = useState("");
 
   const handleChange = (e) => {
@@ -56,20 +56,20 @@ function Booking({ userId, onClose }) {
     <div className="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center bg-dark bg-opacity-75">
       <div className="bg-white p-4 rounded shadow-lg w-100" style={{ maxWidth: "450px" }}>
         <h5 className="text-center mb-4">
-          <FaUser className="me-2 text-primary" /> Booking Form
+          <BsGeoAlt className="me-2 text-primary" /> Booking Form
         </h5>
 
         <form onSubmit={handleSubmit} className="small">
           <div className="mb-3">
             <label className="form-label fw-bold">
-              <FaUser className="me-2 text-secondary" /> Name
+              <FaMapMarkerAlt className="me-2 text-secondary" /> From Place
             </label>
             <input
               type="text"
               className="form-control"
-              name="name"
-              placeholder="Enter your name"
-              value={formData.name}
+              name="from"
+              placeholder="Enter starting place"
+              value={formData.from}
               onChange={handleChange}
               required
             />
@@ -77,28 +77,29 @@ function Booking({ userId, onClose }) {
 
           <div className="mb-3">
             <label className="form-label fw-bold">
-              <BsCalendar className="me-2 text-secondary" /> Date of Birth
+              <BsCalendar className="me-2 text-secondary" /> Date
             </label>
             <input
               type="date"
               className="form-control"
-              name="dateofbirth"
-              value={formData.dateofbirth}
+              name="date"
+              value={formData.date}
               onChange={handleChange}
               required
+              onFocus={(e) => e.target.showPicker && e.target.showPicker()}
             />
           </div>
 
           <div className="mb-3">
             <label className="form-label fw-bold">
-              <FaBriefcase className="me-2 text-secondary" /> Experience
+              <FaMapMarkerAlt className="me-2 text-secondary" /> Destination
             </label>
             <input
               type="text"
               className="form-control"
-              name="experience"
-              placeholder="Enter your experience"
-              value={formData.experience}
+              name="destination"
+              placeholder="Enter destination"
+              value={formData.destination}
               onChange={handleChange}
               required
             />
@@ -120,28 +121,25 @@ function Booking({ userId, onClose }) {
             {phoneError && <small className="text-danger">{phoneError}</small>}
           </div>
 
-<div className="mb-3">
-  <label className="form-label fw-bold">
-    <FaIdBadge className="me-2 text-secondary" /> Roll
-  </label>
-  <select
-    className="form-select"
-    name="roll"
-    value={formData.roll}
-    onChange={handleChange}
-    required
-  >
-    <option value="">-- Select your roll --</option>
-    <option value="Welding">Welding</option>
-    <option value="Hydraulic Service">Hydraulic Service</option>
-    <option value="Others">Others</option>
-  </select>
-</div>
-
+          <div className="mb-3">
+            <label className="form-label fw-bold">
+              <BsPeople className="me-2 text-secondary" /> Number of Members
+            </label>
+            <input
+              type="number"
+              className="form-control"
+              name="members"
+              placeholder="Enter number of members"
+              value={formData.members}
+              onChange={handleChange}
+              required
+              min="1"
+            />
+          </div>
 
           <div className="d-flex flex-column flex-md-row justify-content-between mt-4">
             <button type="submit" className="btn btn-success w-100 w-md-50 me-md-2 mb-2 mb-md-0">
-              <i className="bi bi-check-circle me-2"></i> Submit
+              <i className="bi bi-check-circle me-2"></i> Book Now
             </button>
             <button type="button" className="btn btn-danger w-100 w-md-50" onClick={onClose}>
               <i className="bi bi-x-circle me-2"></i> Close
