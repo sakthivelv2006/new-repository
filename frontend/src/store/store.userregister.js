@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "https://sivanethunaibackend.onrender.com/api/users";
+const API_URL = "https://sivanethunaibackend-1.onrender.com/api/users";
 
 const userRegister = {
   registerUser: async (formData) => {
