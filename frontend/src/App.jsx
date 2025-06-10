@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
@@ -16,6 +16,14 @@ function App() {
     password: "",
   });
 
+  // Check if user is already logged in
+  useEffect(() => {
+    const isLoggedIn = localStorage.getItem("loggedIn");
+    if (isLoggedIn === "true") {
+      navigate("/home");
+    }
+  }, [navigate]);
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -27,39 +35,33 @@ function App() {
       let response;
       if (isRegister) {
         response = await userRegister.registerUser(formData);
-        console.log("Registration Response:", response); // Debugging log
+        console.log("Registration Response:", response);
       
         if (response && response.success) {
           toast.success("Registered successfully!");
+          setIsRegister(false); // Switch to login after successful registration
         } else {
           throw new Error(response.message || "Registration failed");
         }
-      }
-      else {
+      } else {
         response = await userRegister.loginUser(formData);
-        console.log("Login Response:", response); // Debugging log
-        console.log("user id", response.user.id);
+        console.log("Login Response:", response);
   
         if (response && response.user) {
           localStorage.setItem("userId", response.user.id);
           localStorage.setItem("userName", response.user.name);
           localStorage.setItem("userEmail", response.user.email);
-          localStorage.setItem("userPassword", response.user.password);
           localStorage.setItem("loggedIn", "true");
-          toast.success("Login successful!"); // This will show a green toast
+          toast.success("Login successful!");
           navigate("/home");
         } else {
-          
           throw new Error(response.message || "Invalid response from server");
         }
       }
     } catch (error) {
-      toast.error(error.message); // This will show a red toast for errors
-      navigate("/home");
-    
+      toast.error(error.message);
     }
   };
-  
 
   return (
     <div className="position-relative vh-100 vw-100 overflow-hidden">
