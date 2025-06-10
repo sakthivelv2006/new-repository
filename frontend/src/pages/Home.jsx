@@ -16,7 +16,7 @@ function Home() {
   const [showProfilePopup, setShowProfilePopup] = useState(false);
   const [showBookingPopup, setShowBookingPopup] = useState(false);
   const [bookingDetails, setBookingDetails] = useState([]);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // State to control dropdown visibility
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
     const storedUserId = localStorage.getItem("userId");
@@ -24,7 +24,7 @@ function Home() {
     const storedUserEmail = localStorage.getItem("userEmail");
     const isLoggedIn = localStorage.getItem("loggedIn");
 
-    if (isLoggedIn) {
+    if (isLoggedIn === "true") {
       setUserId(storedUserId);
       setUserName(storedUserName);
       setUserEmail(storedUserEmail);
@@ -35,9 +35,11 @@ function Home() {
   }, [navigate]);
 
   const handleLogout = () => {
-    localStorage.clear();
-    navigate("/", { replace: true });
-    window.location.reload();
+    localStorage.removeItem("userId");
+    localStorage.removeItem("userName");
+    localStorage.removeItem("userEmail");
+    localStorage.removeItem("loggedIn");
+    navigate("/");
   };
 
   const handleShowBookings = async () => {
@@ -58,7 +60,7 @@ function Home() {
   };
 
   const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen); // Toggle dropdown visibility
+    setIsDropdownOpen(!isDropdownOpen);
   };
 
   return (
@@ -78,11 +80,11 @@ function Home() {
                 className="btn btn-primary dropdown-toggle"
                 type="button"
                 id="dropdownMenuButton"
-                onClick={toggleDropdown} // Toggle dropdown on button click
+                onClick={toggleDropdown}
               >
                 <i className="bi bi-list"></i> BOOKING CLICK HERE
               </button>
-              {isDropdownOpen && ( // Conditionally render dropdown content
+              {isDropdownOpen && (
                 <ul
                   className="dropdown-menu d-flex flex-row flex-wrap p-2"
                   aria-labelledby="dropdownMenuButton"
@@ -93,7 +95,7 @@ function Home() {
                       className="dropdown-item w-100 text-start"
                       onClick={() => {
                         setShowBooking(true);
-                        setIsDropdownOpen(false); // Close dropdown after clicking
+                        setIsDropdownOpen(false);
                       }}
                     >
                       <i className="bi bi-calendar-check me-2"></i> Booking
@@ -104,7 +106,7 @@ function Home() {
                       className="dropdown-item w-100 text-start"
                       onClick={() => {
                         handleShowBookings();
-                        setIsDropdownOpen(false); // Close dropdown after clicking
+                        setIsDropdownOpen(false);
                       }}
                     >
                       <i className="bi bi-journal-text me-2"></i> Get All Booking Details
@@ -160,28 +162,24 @@ function Home() {
           </video>
 
           {/* Overlay Container for Content */}
-<div className="position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-center align-items-center text-center text-white bg-dark bg-opacity-50 px-3">
-  <h1 className="mt-4 fw-bold">Welcome to Shri Amman Hydraulics Service & Welding Work</h1>
-  <h2 className="lead mt-2">
-    Located in <strong>Sathyamangalam</strong>, we specialize in providing top-tier hydraulic servicing and expert welding work for all your mechanical and industrial needs.
-  </h2>
-  <h1 className="mt-2">
-    <strong>Contact:</strong> Raja – <a href="tel:9080040143" className="text-warning text-decoration-none">90800 40143</a>
-  </h1>
-  <p className="mt-2">
-    Our services include complete maintenance and repair of <strong>JCBs, Hitachi machines, and all types of Earth Movers</strong>. We also handle:
-    <ul className="text-start mt-2" style={{ maxWidth: '600px' }}>
-      <li>Hydraulic pump repair and fitting</li>
-      <li>JCB cylinder welding and rod work</li>
-      <li>On-site emergency services</li>
-      <li>Earth mover engine & track maintenance</li>
-      <li>Heavy equipment structural welding</li>
-    </ul>
-  </p>
-  <h3>CLICK UPPER NAVBAR BOOKING THEN APPLY YOUR JOB THEN YOU WILL BE GETTING YOUR JOB</h3>
-  {loggedIn && <p className="lead mt-3">Welcome, <strong>{userName}</strong>!</p>}
-</div>
+          <div className="position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-center align-items-center text-center text-white bg-dark bg-opacity-50 px-3">
+            <h1 className="mt-4 fw-bold text-warning">Shri Amman Hydraulics Service & Welding Work</h1>
+            <h3 className="mt-2">
+              <span className="text-info">Location:</span> Sathyamangalam
+            </h3>
+            <h4 className="mt-1">
+              <span className="text-success">Contact:</span> Raja (JCB) – <a href="tel:9080040143" className="text-warning text-decoration-none">90800 40143</a>
+            </h4>
 
+            <div className="bg-danger bg-opacity-75 text-white mt-4 p-3 rounded shadow">
+              <h5 className="fw-bold">🚨 Job Alert Notification 🚨</h5>
+              <p className="mb-0">
+                New job openings available! Click the <strong>Booking</strong> button in the top navbar and register your job to get started.
+              </p>
+            </div>
+
+            {loggedIn && <p className="lead mt-4">Welcome, <strong>{userName}</strong>!</p>}
+          </div>
         </div>
 
         {/* Booking Component */}
