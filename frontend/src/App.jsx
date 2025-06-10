@@ -54,9 +54,9 @@ function App() {
         }
       }
     } catch (error) {
-      navigate("/home");
+      
       toast.error(error.message); // This will show a red toast for errors
-      navigate("/home");
+      
     
     }
   };
